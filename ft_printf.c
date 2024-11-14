@@ -6,111 +6,70 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:01:13 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/12 23:10:00 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:56:20 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include "libft/libft.h"
+#include "includes/ft_printf.h"
 
-typedef enum FlagType {
-	F_CHR,
-	F_STR,
-	F_PTR,
-	F_INT,
-	F_UIN,
-	F_HEX,
-	F_HEXU,
-	F_ESC,
-}			t_flag_type;
-
-typedef struct s_flag_var
-{
-	t_flag_type		flag;
-	int				int_;
-	unsigned int	uint_;
-	char			*str_;
-	unsigned long	ulong_;
-}			t_flag_var;
-
-typedef struct s_string_stats
-{
-	size_t				total_sz;
-	size_t				const_sz;
-	size_t				flag_cnt;
-	struct s_flag_var	*flag_var_arr;
-}				t_string_stats;
-
-int	ft_char_in_s(char c, char const *s)
-{
-	while (*s)
-		if (c == *s++)
-			return (1);
-	return (0);
-}
-
-void	ft_putnbrhex(unsigned int nbr, int fd)
-{
-	long const	base_len = 16;
-	long int	n_as_long;
-	char const	*base = "0123456789abcdef";
-
-	n_as_long = nbr;
-	if (n_as_long >= base_len)
-		ft_putnbrhex(n_as_long / base_len, fd);
-	ft_putchar_fd(base[n_as_long % base_len], fd);
-}
-
-int	ft_preparsing(char const *fmt)
+int	ft_flag_count(char const *fmt)
 {
 	size_t	i;
+	int		flgs;
 
+	flgs = 0;
 	i = 0;
 	while (fmt[i])
 	{
 		if (fmt[i] == '%')
+		{
 			if (!ft_char_in_s(fmt[i + 1], "cspdiuxX%"))
-				return (0);
+			{
+				flgs = -1;
+				break ;
+			}
+			flgs++;
+			i++;
+		}
 		i++;
 	}
-	return (1);
+	return (flgs);
 }
 
-size_t	ft_count_if_not_flag(char const *fmt)
+void	ft_parse_arg(char flag, va_list args, char **arr)
 {
+	char	cast;
+
+	if (flag == 'c')
+	{
+		cast = va_arg(args, int) % 256;
+		*arr = ft_strdup(&cast);
+	}
+	else if (flag == 's')
+		*arr = ft_strdup(va_arg(args, char *));
+	else if (flag == 'u')
+		*arr = ft_itoa(va_arg(args, unsigned int));
+	else if (flag == 'i' || flag == 'd')
+		*arr = ft_itoa(va_arg(args, int));
+	else if (flag == 'x')
+		*arr = ft_itoa_base(
+				va_arg(args, unsigned long), "0123456789abcdef");
+	else if (flag == 'p')
+		*arr = ft_strjoin_and_free("0x", ft_itoa_base(
+					va_arg(args, unsigned long),
+					"0123456789abcdef"));
+	else if (flag == 'X')
+		*arr = ft_itoa_base(va_arg(args, unsigned long), "0123456789ABCDEF");
+	else if (flag == '%')
+		*arr = ft_strdup("%");
+}
+
+char	**ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt)
+{
+	char	**arr;
 	size_t	i;
 
-	i = 0;
-	while (fmt[i])
-	{
-		if (fmt[i] == '%')
-			i += 2;
-		else
-			i++;
-	}
-	return (i);
-}
-
-size_t	ft_count_flags(char const *fmt)
-{
-	size_t	f;
-
-	f = 0;
-	while (*fmt)
-	{
-		if (*fmt == '%')
-			f++;
-		fmt++;
-	}
-	return (f);
-}
-
-t_flag_var	*ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt)
-{
-	t_flag_var	*arr;
-	size_t		i;
-
-	arr = ft_calloc(flag_cnt + 1, sizeof(t_flag_var));
+	arr = ft_calloc(flag_cnt + 1, sizeof(char *));
 	if (!arr)
 		return (0);
 	i = 0;
@@ -118,46 +77,7 @@ t_flag_var	*ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt)
 	{
 		if (*fmt == '%')
 		{
-			if (*(fmt + 1) == 'c')
-			{
-				arr[i].flag = F_CHR;
-				arr[i].int_ = va_arg(args, int);
-			}
-			else if (*(fmt + 1) == 's')
-			{
-				arr[i].flag = F_STR;
-				arr[i].str_ = va_arg(args, char *);
-			}
-			else if (*(fmt + 1) == 'p')
-			{
-				arr[i].flag = F_PTR;
-				arr[i].ulong_ = va_arg(args, unsigned long);
-			}
-			else if (*(fmt + 1) == 'u')
-			{
-				arr[i].flag = F_UIN;
-				arr[i].uint_ = va_arg(args, unsigned int);
-			}
-			else if (*(fmt + 1) == 'i' || *(fmt + 1) == 'd')
-			{
-				arr[i].flag = F_INT;
-				arr[i].int_ = va_arg(args, int);
-			}
-			else if (*(fmt + 1) == 'x')
-			{
-				arr[i].flag = F_HEX;
-				arr[i].uint_ = va_arg(args, unsigned);
-			}
-			else if (*(fmt + 1) == 'X')
-			{
-				arr[i].flag = F_HEXU;
-				arr[i].uint_ = va_arg(args, unsigned);
-			}
-			else if (*(fmt + 1) == '%')
-			{
-				arr[i].flag = F_ESC;
-				arr[i].int_ = '%';
-			}
+			ft_parse_arg(*(fmt + 1), args, &arr[i]);
 			i++;
 		}
 		fmt++;
@@ -165,34 +85,45 @@ t_flag_var	*ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt)
 	return (arr);
 }
 
-t_string_stats	ft_init_stats(char const *fmt, va_list args)
+int	ft_display_fmtd_str(char const *fmt, t_string_stats *stats)
 {
-	t_string_stats	stats;
+	size_t			i;
+	size_t			j;
+	int				len;
 
-	stats.const_sz = ft_count_if_not_flag(fmt);
-	stats.total_sz = ft_strlen(fmt);
-	stats.flag_cnt = ft_count_flags(fmt);
-	stats.flag_var_arr = ft_parse_flags(fmt, args, stats.flag_cnt);
-	return (stats);
+	i = 0;
+	j = 0;
+	len = 0;
+	while (fmt[i])
+	{
+		if (fmt[i] == '%')
+		{
+			ft_putstr_fd(stats->flgs_ctnt[j], 1);
+			len += ft_strlen(stats->flgs_ctnt[j]);
+			free(stats->flgs_ctnt[j++]);
+			i += 2;
+			continue ;
+		}
+		else
+			ft_putchar_fd(fmt[i], 1);
+		i++;
+		len++;
+	}
+	return (len);
 }
 
 int	ft_printf(char const *fmt, ...)
 {
 	va_list			args;
 	t_string_stats	stats;
+	int				len;
 
 	va_start(args, fmt);
-	if (ft_preparsing(fmt) == 0)
+	stats.flag_cnt = ft_flag_count(fmt);
+	if (stats.flag_cnt < 0)
 		return (0);
-	stats = ft_init_stats(fmt, args);
-	return (0);
-}
-
-int	main(void)
-{
-	char const	*w = "eiugwlfvl";
-
-	// ft_printf("FT_PRINTF >>> %c le char ou quoi et %x l'entier GROS POINTEUR %p GROS STRING %s %%\n", 'q', -(0x465), w, w);
-	printf("   PRINTF >>> %c le char ou quoi et %x l'entier GROS POINTEUR %p GROS STRING %s %%\n", 'q', -(0x465), w, w);
-	return (0);
+	stats.flgs_ctnt = ft_parse_flags(fmt, args, stats.flag_cnt);
+	len = ft_display_fmtd_str(fmt, &stats);
+	free(stats.flgs_ctnt);
+	return (len);
 }
