@@ -6,7 +6,7 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:26:51 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/15 14:36:34 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:12:26 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_PRINTF_H
 # include <stdarg.h>
 # include "../libs/libft/libft.h"
+# include <limits.h>
 
 
 typedef struct s_string_stats

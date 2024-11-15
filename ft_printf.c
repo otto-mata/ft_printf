@@ -6,12 +6,17 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:01:13 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/15 14:49:02 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:33:39 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/ft_printf.h"
 
+
+typedef enum e_format_justif{
+	LEFT,
+	RIGHT
+}		t_format_justif;
 
 static int	ft_uintlen(uint32_t n)
 {
@@ -62,7 +67,7 @@ int	ft_flag_count(char const *fmt)
 	{
 		if (fmt[i] == '%')
 		{
-			if (!ft_char_in_s(fmt[i + 1], "cspdiuxX%%"))
+			if (!ft_char_in_s(fmt[i + 1], "cspdiuxX%.- "))
 			{
 				flgs = -1;
 				break ;
@@ -182,14 +187,42 @@ int	ft_printf(char const *fmt, ...)
 	return (len);
 }
 
-// #include <limits.h>
-// int main()
-// {
-// 	ft_printf("\n<--->\n START >");
-// 	int d1 = ft_printf(" %% %% %% ");
-// 	printf("< STOP \n<--->\n START >");
-// 	int d2 = printf(" %% %% %% ");
-// 	printf("< STOP \n<--->\n");
-// 	printf("1: %d / 2: %d\n", d1, d2);
-// 	return 0;
-// }
+char	*format_npad(unsigned long n, char c)
+{
+	char	*s;
+
+	s = ft_calloc(n + 1, sizeof(char));
+	if (!s)
+		return (0);
+	s = ft_memset(s, c, n);
+	return (s);
+}
+
+char	*printf_left_justify(uint64_t n,
+	char *to_justify, char c, t_format_justif dir)
+{
+	char	*padding;
+	char	*out;
+
+	if (n > INT32_MAX)
+		return (0);
+	padding = format_npad(n - ft_strlen(to_justify), c);
+	if (dir == LEFT)
+		out = ft_strjoin(to_justify, padding);
+	else
+		out = ft_strjoin(padding, to_justify);
+	free(padding);
+	free(to_justify);
+	return (out);
+}
+
+int main()
+{
+	ft_printf("<--->\n START >");
+	int d1 = ft_printf("");
+	printf("< STOP \n<--->\n START >");
+	int d2 = printf("%-+10d",-50);
+	printf("< STOP \n<--->\n");
+	printf("1: %d / 2: %d\n", d1, d2);
+	return 0;
+}
