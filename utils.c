@@ -6,7 +6,7 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:29:48 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/14 17:02:57 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:39:18 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ void	ft_strrev(char *str)
 	}
 }
 
+char	*ft_itoa_base_int(unsigned int n, char const *base)
+{
+	unsigned int const	*m = &n;
+
+	return (ft_itoa_base(*m, base));
+
+}
+
 char	*ft_itoa_base(unsigned long n, char const *base)
 {
 	int			i;
@@ -61,11 +69,16 @@ char	*ft_itoa_base(unsigned long n, char const *base)
 	return (str);
 }
 
-char	*ft_strjoin_and_free(char const *s1, char *s2)
+char	*ft_specialjoin(char const *s1, char *s2)
 {
 	char	*ret;
 
 	ret = ft_strjoin(s1, s2);
+	if (ft_strncmp(ret, "0x0", ft_strlen(ret)) == 0)
+	{
+		free(ret);
+		ret = ft_strdup("(nil)");
+	}
 	free(s2);
 	return (ret);
 }
