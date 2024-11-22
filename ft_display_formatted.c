@@ -6,11 +6,11 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:44 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/19 17:11:56 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:09:37 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/ft_printf.h"
+#include "ft_printf.h"
 
 int	ft_display_formatted(char const *fmt, t_string_stats *stats)
 {

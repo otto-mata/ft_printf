@@ -6,11 +6,11 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:01:13 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/19 17:13:13 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:20:23 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/ft_printf.h"
+#include "ft_printf.h"
 
 int	ft_printf(char const *fmt, ...)
 {
@@ -23,7 +23,7 @@ int	ft_printf(char const *fmt, ...)
 	if (stats.flag_cnt < 0)
 		return (0);
 	stats.flgs_ctnt = ft_parse_flags(fmt, args, stats.flag_cnt);
-	len = ft_display_fmtd_str(fmt, &stats);
+	len = ft_display_formatted(fmt, &stats);
 	free(stats.flgs_ctnt);
 	return (len);
 }

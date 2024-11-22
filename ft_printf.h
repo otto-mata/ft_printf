@@ -6,13 +6,13 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:26:51 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/19 17:13:08 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:10:24 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-# include "../libs/libft/libft.h"
+# include "libs/libft/libft.h"
 # include <limits.h>
 # include <stdarg.h>
 
@@ -23,7 +23,7 @@ typedef struct s_string_stats
 }			t_string_stats;
 
 int			ft_printf(char const *fmt, ...);
-int			ft_display_fmtd_str(char const *fmt, t_string_stats *stats);
+int			ft_display_formatted(char const *fmt, t_string_stats *stats);
 char		**ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt);
 int			ft_count_flags(char const *fmt);
 int			ft_char_in_s(char c, char const *s);
