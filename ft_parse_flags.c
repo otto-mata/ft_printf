@@ -1,39 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_parse_flags.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/09 11:01:51 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/12 14:16:25 by tblochet         ###   ########.fr       */
+/*   Created: 2024/11/19 17:10:46 by tblochet          #+#    #+#             */
+/*   Updated: 2024/11/19 17:11:02 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 
-void	ft_putnbr_fd(int n, int fd)
+#include "includes/ft_printf.h"
+
+char	**ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt)
 {
-	char	c;
+	char	**arr;
+	size_t	i;
 
-	if (n == -2147483648)
+	arr = ft_calloc(flag_cnt + 1, sizeof(char *));
+	if (!arr)
+		return (0);
+	i = 0;
+	while (*fmt)
 	{
-		ft_putstr_fd("-2147483648", fd);
-		return ;
+		if (*fmt == '%')
+		{
+			ft_parse_arg(*(fmt + 1), args, &arr[i]);
+			i++;
+			fmt++;
+		}
+		fmt++;
 	}
-	if (n < 0)
-	{
-		n *= -1;
-		ft_putchar_fd('-', fd);
-	}
-	if (n < 10)
-	{
-		c = n + '0';
-		ft_putchar_fd(c, fd);
-	}
-	else
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
-	}
+	return (arr);
 }
