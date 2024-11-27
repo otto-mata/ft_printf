@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parse_flags.c                                   :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 17:10:46 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:06:40 by tblochet         ###   ########.fr       */
+/*   Created: 2024/11/09 11:01:51 by tblochet          #+#    #+#             */
+/*   Updated: 2024/11/26 14:14:27 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	**ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt)
+int	ft_memcmp(void const *m1, void const *m2, size_t sz)
 {
-	char	**arr;
-	size_t	i;
+	unsigned char const	*s1 = (const unsigned char *)m1;
+	unsigned char const	*s2 = (const unsigned char *)m2;
 
-	arr = ft_calloc(flag_cnt + 1, sizeof(char *));
-	if (!arr)
-		return (0);
-	i = 0;
-	while (*fmt)
+	while (sz-- > 0)
 	{
-		if (*fmt == '%')
+		if (*s1++ != *s2++)
 		{
-			ft_parse_arg(*(fmt + 1), args, &arr[i]);
-			i++;
-			fmt++;
+			if (s1[-1] < s2[-1])
+				return (-1);
+			return (1);
 		}
-		fmt++;
 	}
-	return (arr);
+	return (0);
 }

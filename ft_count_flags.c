@@ -6,7 +6,7 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:12:42 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/22 12:09:37 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:31:05 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,14 @@ int	ft_count_flags(char const *fmt)
 
 	flgs = 0;
 	i = 0;
-	while (fmt[i])
+	while (fmt[i] && flgs >= 0)
 	{
 		if (fmt[i] == '%')
 		{
 			if (!ft_char_in_s(fmt[i + 1], "cspdiuxX%"))
-			{
 				flgs = -1;
-				break ;
-			}
-			flgs++;
+			else
+				flgs++;
 			i++;
 		}
 		i++;

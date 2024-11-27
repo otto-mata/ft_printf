@@ -6,17 +6,17 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:44 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/22 12:09:37 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/11/26 14:32:34 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_display_formatted(char const *fmt, t_string_stats *stats)
+int	ft_display_formatted(char const *fmt, t_flags *f)
 {
-	size_t			i;
-	size_t			j;
-	int				len;
+	size_t	i;
+	size_t	j;
+	int		len;
 
 	i = 0;
 	j = 0;
@@ -26,16 +26,10 @@ int	ft_display_formatted(char const *fmt, t_string_stats *stats)
 		if (fmt[i] == '%')
 		{
 			if (fmt[i + 1] == 'c')
-			{
-				ft_putchar_fd(*stats->flgs_ctnt[j], 1);
-				len++;
-			}
+				(ft_putchar_fd(*f->val[j], 1), len++);
 			else
-			{
-				ft_putstr_fd(stats->flgs_ctnt[j], 1);
-				len += ft_strlen(stats->flgs_ctnt[j]);
-			}
-			free(stats->flgs_ctnt[j++]);
+				(ft_putstr_fd(f->val[j], 1), len += ft_strlen(f->val[j]));
+			free(f->val[j++]);
 			i += 2;
 			continue ;
 		}

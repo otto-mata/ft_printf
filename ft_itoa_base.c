@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parse_flags.c                                   :+:      :+:    :+:   */
+/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 17:10:46 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:06:40 by tblochet         ###   ########.fr       */
+/*   Created: 2024/11/26 14:22:40 by tblochet          #+#    #+#             */
+/*   Updated: 2024/11/26 14:26:06 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	**ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt)
+char	*ft_itoa_base(unsigned long n, char const *base)
 {
-	char	**arr;
-	size_t	i;
+	int		i;
+	int		digit;
+	char	*str;
 
-	arr = ft_calloc(flag_cnt + 1, sizeof(char *));
-	if (!arr)
+	if (n == 0)
+		return (ft_strdup("0"));
+	str = ft_calloc(64, sizeof(char));
+	if (!str)
 		return (0);
 	i = 0;
-	while (*fmt)
+	while (n > 0)
 	{
-		if (*fmt == '%')
-		{
-			ft_parse_arg(*(fmt + 1), args, &arr[i]);
-			i++;
-			fmt++;
-		}
-		fmt++;
+		digit = n % ft_strlen(base);
+		str[i++] = base[digit];
+		n /= ft_strlen(base);
 	}
-	return (arr);
+	ft_strrev(str);
+	return (str);
 }
