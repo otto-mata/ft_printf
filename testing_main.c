@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
+/*   testing_main.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 14:22:40 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:26:06 by tblochet         ###   ########.fr       */
+/*   Created: 2024/12/06 09:38:52 by tblochet          #+#    #+#             */
+/*   Updated: 2024/12/12 20:25:09 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
-char	*ft_itoa_base(unsigned long n, char const *base)
+int	main(int argc, char const *argv[])
 {
-	int		i;
-	int		digit;
-	char	*str;
+	int	ret;
 
-	if (n == 0)
-		return (ft_strdup("0"));
-	str = ft_calloc(64, sizeof(char));
-	if (!str)
-		return (0);
-	i = 0;
-	while (n > 0)
-	{
-		digit = n % ft_strlen(base);
-		str[i++] = base[digit];
-		n /= ft_strlen(base);
-	}
-	ft_strrev(str);
-	return (str);
+	// (void) argc;
+	// (void) argv;
+	// close(1);
+	// setbuf(stdout, 0);
+	ret = printf("     %d", 42);
+	dprintf(2,"Return code: %d\n", ret);
+	ret = ft_printf("     %d", 42);
+	dprintf(2,"Return code: %d\n", ret);
+	// printf("printf ?");
+	return (0);
 }

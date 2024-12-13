@@ -1,19 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/09 11:01:51 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:17:16 by tblochet         ###   ########.fr       */
+/*   Created: 2024/11/12 14:35:30 by tblochet          #+#    #+#             */
+/*   Updated: 2024/11/28 12:17:27 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_bzero(void *mem, size_t sz)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	while (sz--)
-		*(unsigned char *)mem++ = 0;
+	t_list	*tmp;
+
+	if (!(*lst))
+	{
+		*lst = new;
+		return ;
+	}
+	tmp = *lst;
+	while (tmp)
+	{
+		if (tmp->next)
+			tmp = tmp->next;
+		else
+			break ;
+	}
+	tmp->next = new;
 }

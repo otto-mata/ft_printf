@@ -1,12 +1,8 @@
-SRC=ft_specialjoin.c \
-	ft_strrev.c \
+SRC=ft_strrev.c \
 	ft_printf.c \
-	ft_itoa_base.c \
-	ft_itoa_base_int.c \
+	ft_ltoh.c \
 	ft_itoa.c \
 	ft_char_in_s.c \
-	ft_bzero.c \
-	ft_memcmp.c \
 	ft_memcpy.c \
 	ft_strncmp.c \
 	ft_calloc.c \
@@ -16,18 +12,21 @@ SRC=ft_specialjoin.c \
 	ft_strdup.c \
 	ft_strjoin.c \
 	ft_parse_flags.c \
-	ft_parse_arg.c \
+	va_list_parser.c \
 	ft_count_flags.c \
-	ft_display_formatted.c
+	ft_display_formatted.c \
+	ft_lstnew.c \
+	ft_lstadd_back.c \
+	ft_lstclear.c
 
 OBJS=		$(SRC:.c=.o)
 NAME=		libftprintf.a
-
+ 
 ARBIN=		ar
 ARFLGS=		rcs
 
 CC=			cc
-CFLAGS=		-Wall -Wextra -Werror
+CFLAGS=		-Wall -Wextra -Werror -g3
 
 $(NAME): $(OBJS)
 	$(ARBIN) $(ARFLGS) $@ $^

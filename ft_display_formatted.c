@@ -6,37 +6,51 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:44 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:32:34 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:32:12 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_display_formatted(char const *fmt, t_flags *f)
+static int	ft_print_value(char const *s, t_list **f)
 {
-	size_t	i;
-	size_t	j;
-	int		len;
+	int	len;
+
+	if (*(s + 1) == 'c')
+		len = ft_putchar_fd(*(*f)->val, 1);
+	else
+		len = ft_putstr_fd((*f)->val, 1);
+	*f = (*f)->next;
+	return (len);
+}
+
+static int	put2c(char const *s)
+{
+	return (ft_putchar_fd(*s, 1) + ft_putchar_fd(*(s + 1), 1));
+}
+
+int	ft_display_formatted(char const *fmt, t_list *f)
+{
+	size_t			i;
+	int				len;
+	size_t const	sz = ft_strlen(fmt);
 
 	i = 0;
-	j = 0;
 	len = 0;
-	while (fmt[i])
+	while (i < sz)
 	{
 		if (fmt[i] == '%')
 		{
-			if (fmt[i + 1] == 'c')
-				(ft_putchar_fd(*f->val[j], 1), len++);
+			if (ft_char_in_s(fmt[i + 1], "cspdiuxX%") && f)
+				len += ft_print_value(&fmt[i], &f);
+			else if (fmt[i + 1])
+				len += put2c(&fmt[i]);
 			else
-				(ft_putstr_fd(f->val[j], 1), len += ft_strlen(f->val[j]));
-			free(f->val[j++]);
+				len += ft_putchar_fd('%', 1);
 			i += 2;
-			continue ;
 		}
 		else
-			ft_putchar_fd(fmt[i], 1);
-		i++;
-		len++;
+			len += ft_putchar_fd(fmt[i++], 1);
 	}
 	return (len);
 }

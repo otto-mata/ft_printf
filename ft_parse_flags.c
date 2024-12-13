@@ -6,30 +6,28 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:10:46 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:06:40 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/12/10 10:15:13 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	**ft_parse_flags(char const *fmt, va_list args, size_t flag_cnt)
+void	ft_parse_flags(char const *fmt, va_list args, t_formatter *fmtr)
 {
-	char	**arr;
-	size_t	i;
+	size_t			j;
+	t_list			*node;
+	size_t const	sz = ft_strlen(fmt);
 
-	arr = ft_calloc(flag_cnt + 1, sizeof(char *));
-	if (!arr)
-		return (0);
-	i = 0;
-	while (*fmt)
+	j = 0;
+	while (j < sz)
 	{
-		if (*fmt == '%')
+		if (fmt[j] == '%')
 		{
-			ft_parse_arg(*(fmt + 1), args, &arr[i]);
-			i++;
-			fmt++;
+			node = ft_lstnew(va_list_parser(fmt[++j], args));
+			if (!node)
+				return ;
+			ft_lstadd_back(&fmtr->flags, node);
 		}
-		fmt++;
+		j++;
 	}
-	return (arr);
 }

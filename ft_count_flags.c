@@ -6,30 +6,28 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:12:42 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 15:31:05 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:20:21 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_count_flags(char const *fmt)
+void	ft_count_flags(char const *fmt, t_formatter *fmtr)
 {
 	size_t	i;
-	int		flgs;
+	size_t	fmt_len;
 
-	flgs = 0;
+	fmtr->n = 0;
 	i = 0;
-	while (fmt[i] && flgs >= 0)
+	fmt_len = ft_strlen(fmt);
+	while (i < fmt_len)
 	{
 		if (fmt[i] == '%')
 		{
-			if (!ft_char_in_s(fmt[i + 1], "cspdiuxX%"))
-				flgs = -1;
-			else
-				flgs++;
+			if (ft_char_in_s(fmt[i + 1], "cspdiuxX%"))
+				fmtr->n++;
 			i++;
 		}
 		i++;
 	}
-	return (flgs);
 }

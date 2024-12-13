@@ -1,20 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa_base_int.c                                 :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 14:24:24 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:25:58 by tblochet         ###   ########.fr       */
+/*   Created: 2024/11/12 14:40:55 by tblochet          #+#    #+#             */
+/*   Updated: 2024/11/28 12:44:25 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_itoa_base_int(unsigned int n, char const *base)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	unsigned int const	*m = &n;
+	t_list	*iter;
+	t_list	*next;
 
-	return (ft_itoa_base(*m, base));
+	if (!lst || !del)
+		return ;
+	iter = *lst;
+	while (iter)
+	{
+		next = iter->next;
+		del(iter->val);
+		free(iter);
+		iter = next;
+	}
+	*lst = 0;
 }

@@ -1,30 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_itoh.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/09 11:01:51 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:14:27 by tblochet         ###   ########.fr       */
+/*   Created: 2024/11/26 14:22:40 by tblochet          #+#    #+#             */
+/*   Updated: 2024/12/11 20:27:32 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_memcmp(void const *m1, void const *m2, size_t sz)
+int	hexlen(unsigned long n)
 {
-	unsigned char const	*s1 = (const unsigned char *)m1;
-	unsigned char const	*s2 = (const unsigned char *)m2;
+	int	i;
 
-	while (sz-- > 0)
+	i = 1;
+	while (n / 16)
 	{
-		if (*s1++ != *s2++)
-		{
-			if (s1[-1] < s2[-1])
-				return (-1);
-			return (1);
-		}
+		i++;
+		n /= 16;
 	}
-	return (0);
+	return (i);
+}
+
+char	*ft_ltoh(unsigned long n, bool upper)
+{
+	int		i;
+	char	*hexd;
+	char	*base;
+
+	i = hexlen(n) - 1;
+	hexd = ft_calloc(hexlen(n) + 1, sizeof(char));
+	if (!hexd)
+		return (0);
+	if (upper)
+		base = "0123456789ABCDEF";
+	else
+		base = "0123456789abcdef";
+	while (i > -1)
+	{
+		hexd[i] = base[n % 16];
+		i--;
+		n /= 16;
+	}
+	return (hexd);
 }

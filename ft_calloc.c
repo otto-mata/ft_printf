@@ -6,11 +6,17 @@
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 11:01:51 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:13:43 by tblochet         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:31:37 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+static void	ft_bzero(void *mem, size_t sz)
+{
+	while (sz--)
+		*(unsigned char *)mem++ = 0;
+}
 
 void	*ft_calloc(size_t nmemb, size_t sz)
 {

@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_specialjoin.c                                   :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tblochet <tblochet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 16:29:48 by tblochet          #+#    #+#             */
-/*   Updated: 2024/11/26 14:31:45 by tblochet         ###   ########.fr       */
+/*   Created: 2024/11/12 14:28:13 by tblochet          #+#    #+#             */
+/*   Updated: 2024/11/28 12:43:52 by tblochet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_specialjoin(char const *s1, char *s2)
+t_list	*ft_lstnew(char *val)
 {
-	char	*ret;
+	t_list	*node;
 
-	ret = ft_strjoin(s1, s2);
-	if (ft_strncmp(ret, "0x0", ft_strlen(ret)) == 0)
-	{
-		free(ret);
-		ret = ft_strdup("(nil)");
-	}
-	free(s2);
-	return (ret);
+	node = ft_calloc(1, sizeof(t_list));
+	if (!node)
+		return (0);
+	node->val = val;
+	node->next = 0;
+	return (node);
 }
